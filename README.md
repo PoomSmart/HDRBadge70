@@ -7,7 +7,10 @@ Comparision
 ==========
 
 Without HDR Badge
+
 ![alt tag](https://raw.github.com/PoomSmart/HDRBadge70/master/OFF.PNG)
 
+
 With HDR Badge
+
 ![alt tag](https://raw.github.com/PoomSmart/HDRBadge70/master/ON.PNG)
