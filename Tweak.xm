@@ -76,6 +76,7 @@
 {
 	%orig;
 	[MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge") setEnabled:YES];
+	[MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge") setUserInteractionEnabled:NO];
 }
 
 - (void)_createStillImageControlsIfNecessary
