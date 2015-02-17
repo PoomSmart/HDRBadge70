@@ -1,47 +1,8 @@
-#import <Foundation/Foundation.h>
-
-@interface CAMHDRBadge : UIButton
-@end
-
-@interface PLCameraView : UIView
-- (CAMHDRBadge *)_HDRBadge;
-- (int)cameraMode;
-- (BOOL)HDRIsOn;
-- (BOOL)_shouldHideHDRBadgeForMode:(int)mode;
-- (void)_createHDRBadgeIfNecessary;
-@end
-
-@interface PLCameraView (HDR70Addition)
-- (void)_updateHDRBadge;
-@end
-
-@interface PLCameraEffectsRenderer : NSObject
-@property(assign, nonatomic, getter=isShowingGrid) BOOL showGrid;
-@end
-
-@interface PLCameraController : NSObject
-@property(retain) PLCameraEffectsRenderer *effectsRenderer;
-+ (PLCameraController *)sharedInstance;
-- (PLCameraView *)delegate;
-- (BOOL)isCapturingVideo;
-@end
-
-@interface UIColor (HDR70Addition)
-+ (UIColor *)systemYellowColor;
-@end
-
-@interface UIImage (HDR70Addition)
-+ (UIImage *)imageNamed:(NSString *)name inBundle:(NSBundle *)bundle;
-- (UIImage *)_flatImageWithColor:(UIColor *)color;
-@end
-
-@interface UIView (HDR70Addition)
-- (void)pl_setHidden:(BOOL)hidden animated:(BOOL)animated;
-@end
+#import "../PS.h"
 
 %hook PLCameraView
 
-- (BOOL)_shouldHideHDRBadgeForMode:(int)mode
+- (BOOL)_shouldHideHDRBadgeForMode:(NSInteger)mode
 {
 	if (mode == 0 || mode == 4) {
 		if ([self HDRIsOn]) {
@@ -53,20 +14,20 @@
 	return YES;
 }
 
-- (void)_setFlashMode:(int)mode
+- (void)_setFlashMode:(NSInteger)mode
 {
 	%orig;
 	[self _updateHDRBadge];
 }
 
-- (void)setCameraMode:(int)mode
+- (void)setCameraMode:(NSInteger)mode
 {
 	%orig;
 	if (!MSHookIvar<BOOL>(self, "_capturingPhoto") && ![[%c(PLCameraController) sharedInstance] isCapturingVideo])
 		[self _updateHDRBadge];
 }
 
-- (void)setVideoFlashMode:(int)mode
+- (void)setVideoFlashMode:(NSInteger)mode
 {
 	%orig;
 	[self _updateHDRBadge];
@@ -75,8 +36,8 @@
 - (void)_createHDRBadgeIfNecessary
 {
 	%orig;
-	[MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge") setEnabled:YES];
-	[MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge") setUserInteractionEnabled:NO];
+	MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge").enabled = YES;
+	MSHookIvar<CAMHDRBadge *>(self, "__HDRBadge").userInteractionEnabled = NO;
 }
 
 - (void)_createStillImageControlsIfNecessary
@@ -94,7 +55,7 @@
 %new
 - (void)_updateHDRBadge
 {
-	BOOL hidden = [self _shouldHideHDRBadgeForMode:[self cameraMode]];
+	BOOL hidden = [self _shouldHideHDRBadgeForMode:self.cameraMode];
 	[[self _HDRBadge] pl_setHidden:hidden animated:YES];
 }
 

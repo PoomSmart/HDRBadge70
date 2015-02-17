@@ -14,3 +14,5 @@ Without HDR Badge
 With HDR Badge
 
 ![alt tag](https://raw.github.com/PoomSmart/HDRBadge70/master/ON.PNG)
+
+MIT License.
