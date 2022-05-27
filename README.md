@@ -3,7 +3,7 @@ HDR Badge 7.0
 
 Fulfill the incompleted HDR badge done by Apple in iOS 7.0
 
-Comparision
+Comparison
 ==========
 
 Without HDR Badge
